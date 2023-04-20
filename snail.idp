@@ -1,0 +1,29 @@
+vocabulary V {
+
+    type Vakje
+    type Cijfer
+    Edge : Vakje *Vakje -> Bool
+    ValueOf: Vakje -> Cijfer
+
+    type Height
+    type width
+
+    rows :  
+    colums 
+    
+}
+
+theory T:V {
+    Vakje := {1,2,3,4,5,6,7,8,9}.
+    Edge:= {(1,2),(2,3),(3,4),(4,5),(5,6),(6,7),(7,8),(8,9)}.
+}
+
+structure S:V {
+    Cijfer := {0,1,2,3}.
+    Height := {3}.
+    width := {3}.
+}
+
+procedure main() {
+    pretty_print(model_expand(T, S))
+}
