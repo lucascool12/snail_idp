@@ -4,8 +4,8 @@ vocabulary V {
     type Size
     Edge : Cell *Cell -> Bool
     ValueOf: Cell -> Value
-    Row: Cell -> Int
-    Column: Cell -> Int
+    Row: Cell*Cell -> Bool
+    Column: Cell*Cell -> Bool
     NextValue: Value -> Value
     EndValue: () -> Value
     StartValue: () -> Value
@@ -14,24 +14,26 @@ vocabulary V {
 
 theory T:V {
     //!x in Cell: ValueOf(x) ~= 0 & ValueOf(x)
+    !x0,x1 in Cell: Row(x0,x1) & ValueOf(x0) ~= 0 => ValueOf(x0) ~= ValueOf(x1).
+    !x0,x1 in Cell: Column(x0,x1) & ValueOf(x0) ~= 0 => ValueOf(x0) ~= ValueOf(x1).
 }
 
 structure S:V {
     Value := {0,1,2,3}.
     NextValue := {1 -> 2, 2 -> 3, 3 -> 1, 0 -> 0}.
-    EndValue := {3}.
-    StartValue := {1}
+    EndValue := 3.
+    StartValue := 1.
     Size := {3}.
     Cell := {1,2,3,4,5,6,7,8,9}.
     Edge := {(1,2),(2,3),(3,4),(4,5),(5,6),(6,7),(7,8),(8,9)}.
     ValueOf >> { 2 -> 1, 9 -> 3 }.
-    Row := {1 -> 1, 2 -> 1, 3 -> 1,
-            4 -> 2, 5 -> 3, 6 -> 3,
-            7 -> 3, 8 -> 2, 9 -> 2
+    Column := {(1,8),(8,7),(1,7),
+            (2,9),(2,6),(9,6),
+            (3,4),(4,5),(5,3)
         }.
-    Column := {1 -> 1, 2 -> 2, 3 -> 3,
-                4 -> 3, 5 -> 3, 6 -> 2,
-                7 -> 1, 8 -> 1, 9 -> 2
+    Row := {(1,2),(2,3),(3,1),
+                (8,9),(9,4),(4,8),
+                (7,6),(6,5),(5,7)
         }.
 }
 
