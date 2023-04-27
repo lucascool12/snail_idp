@@ -13,7 +13,7 @@ vocabulary V {
 }
 
 theory T:V {
-    !x0 in Cell: ((ValueOf(x0) ~= 0 & x0 ~= LastCell()) =>
+    !x0 in Cell: ((ValueOf(x0) ~= 0 & x0 ~= LastCell()) =>                  // zorgen dat er een 1 2 3 sequentie is
         (?x1 in Cell: x1 > x0 & ValueOf(x1) = NextValue(ValueOf(x0)) &
         (!x2 in Cell: (x2 > x0 & x2 < x1) => (ValueOf(x2) = 0)))).
     (ValueOf(FirstCell()) ~= StartValue() =>
@@ -26,9 +26,9 @@ theory T:V {
             //!x1 in Cell: (x1 > x0) => (ValueOf(x1) = 0)))). // Last value 3 (does not work)
 
 
-!z in Size: !y in Value: (y~=0) => #{x in Cell: Row(x)=z & ValueOf(x) = y} = 1.
+!z in Size: !y in Value: (y~=0) => #{x in Cell: Row(x)=z & ValueOf(x) = y} = 1.     // exact 1 van elke value op de elke rij
 
-!z in Size: !y in Value: (y~=0) => #{x in Cell: Column(x)=z & ValueOf(x) = y} = 1.
+!z in Size: !y in Value: (y~=0) => #{x in Cell: Column(x)=z & ValueOf(x) = y} = 1.  // exact 1 van elke value op de elke kolom
 
 }
 
