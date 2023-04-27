@@ -1,10 +1,10 @@
 vocabulary V {
     type Cell
     type Value
+    type Size := { 1..5 }
     ValueOf: Cell -> Value
     Row: Cell -> Int
     Column: Cell -> Int
-    NextCell: Cell -> Cell
     NextValue: Value -> Value
     EndValue: () -> Value
     StartValue: () -> Value
@@ -24,42 +24,12 @@ theory T:V {
         //((ValueOf(LastCell()) = 0) => 
             //(?x0 in Cell: x0 < LastCell() & ValueOf(x0) = EndValue() &
             //!x1 in Cell: (x1 > x0) => (ValueOf(x1) = 0)))). // Last value 3 (does not work)
-    //!x0,x1 in Cell: Row(x0, x1) & ValueOf(x0) ~= 0 => ValueOf(x0) ~= ValueOf(x1).
-    //!y in Value: (y~=0) & (?x0,x1 in Cell: Row(x0,x1) & (ValueOf(x0) = y ^ ValueOf(x1) = y)).
-    //!x0,x1 in Cell: Column(x0, x1) & ValueOf(x0) ~= 0 => ValueOf(x0) ~= ValueOf(x1).
-    //!y in Value: (y~=0) & (?x0,x1 in Cell: Column(x0,x1) & (ValueOf(x0) = y ^ ValueOf(x1) = y)).
 
-    #{x in Cell: Row(x)=1 & ValueOf(x) = 1} = 1.
-    #{x in Cell: Row(x)=1 & ValueOf(x) = 2} = 1.
-    #{x in Cell: Row(x)=1 & ValueOf(x) = 3} = 1.
-    #{x in Cell: Row(x)=2 & ValueOf(x) = 1} = 1.
-    #{x in Cell: Row(x)=2 & ValueOf(x) = 2} = 1.
-    #{x in Cell: Row(x)=2 & ValueOf(x) = 3} = 1.
-    #{x in Cell: Row(x)=3 & ValueOf(x) = 1} = 1.
-    #{x in Cell: Row(x)=3 & ValueOf(x) = 2} = 1.
-    #{x in Cell: Row(x)=3 & ValueOf(x) = 3} = 1.
-    #{x in Cell: Row(x)=4 & ValueOf(x) = 1} = 1.
-    #{x in Cell: Row(x)=4 & ValueOf(x) = 2} = 1.
-    #{x in Cell: Row(x)=4 & ValueOf(x) = 3} = 1.
-    #{x in Cell: Row(x)=5 & ValueOf(x) = 1} = 1.
-    #{x in Cell: Row(x)=5 & ValueOf(x) = 2} = 1.
-    #{x in Cell: Row(x)=5 & ValueOf(x) = 3} = 1.
 
-    #{x in Cell: Column(x)=1 & ValueOf(x) = 1} = 1.
-    #{x in Cell: Column(x)=1 & ValueOf(x) = 2} = 1.
-    #{x in Cell: Column(x)=1 & ValueOf(x) = 3} = 1.
-    #{x in Cell: Column(x)=2 & ValueOf(x) = 1} = 1.
-    #{x in Cell: Column(x)=2 & ValueOf(x) = 2} = 1.
-    #{x in Cell: Column(x)=2 & ValueOf(x) = 3} = 1.
-    #{x in Cell: Column(x)=3 & ValueOf(x) = 1} = 1.
-    #{x in Cell: Column(x)=3 & ValueOf(x) = 2} = 1.
-    #{x in Cell: Column(x)=3 & ValueOf(x) = 3} = 1.
-    #{x in Cell: Column(x)=4 & ValueOf(x) = 1} = 1.
-    #{x in Cell: Column(x)=4 & ValueOf(x) = 2} = 1.
-    #{x in Cell: Column(x)=4 & ValueOf(x) = 3} = 1.
-    #{x in Cell: Column(x)=5 & ValueOf(x) = 1} = 1.
-    #{x in Cell: Column(x)=5 & ValueOf(x) = 2} = 1.
-    #{x in Cell: Column(x)=5 & ValueOf(x) = 3} = 1.
+!z in Size: !y in Value: (y~=0) => #{x in Cell: Row(x)=z & ValueOf(x) = y} = 1.
+
+!z in Size: !y in Value: (y~=0) => #{x in Cell: Column(x)=z & ValueOf(x) = y} = 1.
+
 }
 
 structure S:V {
