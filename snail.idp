@@ -14,21 +14,26 @@ vocabulary V {
 
 theory T:V {
     !x0 in Cell: ((ValueOf(x0) ~= 0 & x0 ~= LastCell()) =>                  // zorgen dat er een 1 2 3 sequentie is
-        (?x1 in Cell: x1 > x0 & ValueOf(x1) = NextValue(ValueOf(x0)) &
-        (!x2 in Cell: (x2 > x0 & x2 < x1) => (ValueOf(x2) = 0)))).
+        (?x1 in Cell: x1 > x0 &
+            ((x1 ~= LastCell() <=> ValueOf(x1) = NextValue(ValueOf(x0))) |
+                (x1 = LastCell() <=> (ValueOf(x1) = 3 | ValueOf(x1) = 0))
+            ) &
+            (!x2 in Cell: (x2 > x0 & x2 < x1) => (ValueOf(x2) = 0))
+        )
+    ).
     (ValueOf(FirstCell()) ~= StartValue() =>
         ((ValueOf(FirstCell()) = 0) => 
             (?x0 in Cell: x0 > FirstCell() & ValueOf(x0) = StartValue() &
             !x1 in Cell: (x1 > FirstCell() & x1 < x0) => (ValueOf(x1) = 0)))). // First value is 1
-    //(ValueOf(LastCell()) ~= EndValue() =>
-        //((ValueOf(LastCell()) = 0) => 
-            //(?x0 in Cell: x0 < LastCell() & ValueOf(x0) = EndValue() &
-            //!x1 in Cell: (x1 > x0) => (ValueOf(x1) = 0)))). // Last value 3 (does not work)
+    (ValueOf(LastCell()) ~= EndValue() =>
+        ((ValueOf(LastCell()) = 0) <=> 
+            (?x0 in Cell: x0 < LastCell() & ValueOf(x0) = EndValue() &
+            !x1 in Cell: (x1 > x0) => (ValueOf(x1) = 0)))).
 
 
-!z in Size: !y in Value: (y~=0) => #{x in Cell: Row(x)=z & ValueOf(x) = y} = 1.     // exact 1 van elke value op de elke rij
+    !z in Size: !y in Value: (y~=0) => #{x in Cell: Row(x)=z & ValueOf(x) = y} = 1.     // exact 1 van elke value op de elke rij
 
-!z in Size: !y in Value: (y~=0) => #{x in Cell: Column(x)=z & ValueOf(x) = y} = 1.  // exact 1 van elke value op de elke kolom
+    !z in Size: !y in Value: (y~=0) => #{x in Cell: Column(x)=z & ValueOf(x) = y} = 1.  // exact 1 van elke value op de elke kolom
 
 }
 
@@ -40,7 +45,7 @@ structure S:V {
     Cell := {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25}.
     LastCell := 25.
     FirstCell := 1.
-    ValueOf >> { 2 -> 1, 7 -> 2,10->3,12->2, 25->3 }.
+    ValueOf >> { 2 -> 1, 7 -> 2,10 -> 3,12 -> 2, 25 -> 3 }.
     Column := {1->1,16->1,15->1,14->1,13->1,
                2->2,17->2,24->2,23->2,12->2,
                3->3,18->3,25->3,22->3,11->3,
