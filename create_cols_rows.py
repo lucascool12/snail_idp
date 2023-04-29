@@ -29,6 +29,7 @@ if __name__ == "__main__":
     if numb%2 != 1:
         print("Needs to be uneven number")
         exit(0)
+    print(f"LastCell := {numb*numb}.")
     values = "Cell := { "
     for i in range(1, numb*numb):
         values += f"{i}, "
