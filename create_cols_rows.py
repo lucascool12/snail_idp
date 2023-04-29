@@ -29,7 +29,7 @@ if __name__ == "__main__":
     if numb%2 != 1:
         print("Needs to be uneven number")
         exit(0)
-    values = "Value := { "
+    values = "Cell := { "
     for i in range(1, numb*numb):
         values += f"{i}, "
     values += f"{numb*numb} }}.\n\n"
@@ -55,7 +55,7 @@ if __name__ == "__main__":
         if j%numb + 1 == numb:
             cols += "\n\t"
     print(cols)
-    cols = "Rows := { "
+    cols = "Row := { "
     for j, (i, x) in enumerate(vals_row):
         if j != len(vals_row) - 1:
             cols += f"{i + 1} -> {x%numb + 1}, "
