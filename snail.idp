@@ -1,7 +1,7 @@
 vocabulary V {
     type Cell
     type Value
-    type Size := { 1..5 }
+    type Size
     ValueOf: Cell -> Value
     Row: Cell -> Int
     Column: Cell -> Int
@@ -16,7 +16,7 @@ theory T:V {
     !x0 in Cell: ((ValueOf(x0) ~= 0 & x0 ~= LastCell()) =>                  // zorgen dat er een 1 2 3 sequentie is
         (?x1 in Cell: x1 > x0 &
             ((x1 ~= LastCell() <=> ValueOf(x1) = NextValue(ValueOf(x0))) |
-                (x1 = LastCell() <=> (ValueOf(x1) = 3 | ValueOf(x1) = 0))
+                (x1 = LastCell() <=> (ValueOf(x1) = EndValue() | ValueOf(x1) = 0))
             ) &
             (!x2 in Cell: (x2 > x0 & x2 < x1) => (ValueOf(x2) = 0))
         )
@@ -24,10 +24,10 @@ theory T:V {
     (ValueOf(FirstCell()) ~= StartValue() =>
         ((ValueOf(FirstCell()) = 0) => 
             (?x0 in Cell: x0 > FirstCell() & ValueOf(x0) = StartValue() &
-            !x1 in Cell: (x1 > FirstCell() & x1 < x0) => (ValueOf(x1) = 0)))). // First value is 1
+            !x1 in Cell: (x1 > FirstCell() & x1 < x0) => (ValueOf(x1) = 0)))). // First Value must be StartValue()
     (ValueOf(LastCell()) ~= EndValue() =>
         ((ValueOf(LastCell()) = 0) <=> 
-            (?x0 in Cell: x0 < LastCell() & ValueOf(x0) = EndValue() &
+            (?x0 in Cell: x0 < LastCell() & ValueOf(x0) = EndValue() & // Last value must be EndValue()
             !x1 in Cell: (x1 > x0) => (ValueOf(x1) = 0)))).
 
 
@@ -38,6 +38,7 @@ theory T:V {
 }
 
 structure S:V {
+    Size := { 1..5 }.
     Value := {0,1,2,3}.
     NextValue := {1 -> 2, 2 -> 3, 3 -> 1, 0 -> 0}.
     EndValue := 3.
